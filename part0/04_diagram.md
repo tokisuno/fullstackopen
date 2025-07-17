@@ -7,9 +7,9 @@ sequenceDiagram
     browser->>server: POST https://fullstack-exampleapp.herokuapp.com/new_note
     activate server
 
-    Note right of browser:Send POST request to server address `new_note`
+    Note right of browser: Send POST request to server address "/new_note"
 
-    server-->>browser: Status 302 (Redirect URL); Server performs GET to browser to Header's location `/notes`
+    server-->>browser: Status 302 (Redirect URL); Server performs GET to browser to Header's location "/notes"
     deactivate server
 
     Note right of browser: Form data is sent at the same time
