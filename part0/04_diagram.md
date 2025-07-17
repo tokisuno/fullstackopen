@@ -6,7 +6,6 @@ sequenceDiagram
 
     browser->>server: POST https://fullstack-exampleapp.herokuapp.com/new_note
     activate server
-
     server-->>browser: Status 302 (Redirect URL); Server performs GET to browser to Header's location "/notes"
     deactivate server
 
