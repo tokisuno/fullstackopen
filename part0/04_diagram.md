@@ -4,10 +4,12 @@ sequenceDiagram
     participant browser
     participant server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
-    activate server
-    server-->>browser: HTML document
+    browser->>server: POST https://fullstack-exampleapp.herokuapp.com/new_note
+    Send POST request to server address `new_note`
+    server-->>browser: Status 302 (Redirect URL); Server performs GET to browser to Header's location `/notes`
     deactivate server
+
+    Note right of browser: Form data is sent at the same time
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
