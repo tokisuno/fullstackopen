@@ -2,3 +2,24 @@ h1 {
   color: green;
   font-style: italic;
 }
+
+.notif-pos{
+  color: white;
+  background: darkgreen;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notif-neg {
+  color: white;
+  background: darkred;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+

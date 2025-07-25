@@ -11,7 +11,8 @@ const getAll = () => {
     important: true
   }
 
-  return request.then(res => res.data)
+  // return request.then(res => res.data)
+  return request.then(res => res.data.concat(nonExisting))
 }
 
 const create = newObject => {
