@@ -9,7 +9,12 @@ const Results = ({ result, countries, setCountries }) => {
           res.data.forEach(c => {
             const name = c.name.common.toLowerCase();
             if (name.includes(result.toLowerCase())) {
-              setCountries(prev => [...prev, c.name.common]);
+              if (countries.includes(result.toLowerCase())) {
+                console.log('already exists');
+                return;
+              } else {
+                setCountries(prev => [...prev, c.name.common]);
+              }
             }
           })
         })
