@@ -1,5 +1,7 @@
 const express = require('express');
-const app = express()
+const cors = require('cors');
+
+const app = express();
 
 let notes = [
   {
@@ -19,7 +21,17 @@ let notes = [
   }
 ]
 
+const reqLogger = (req, res, next) => {
+  console.log(`Method: ${req.method}`);
+  console.log(`Path: ${req.path}`);
+  console.log(`Body: ${req.body}`);
+  console.log('---');
+  next();
+}
+
+app.use(cors())
 app.use(express.json())
+app.use(reqLogger);
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello world!</h1>');
@@ -40,6 +52,7 @@ app.get('/api/notes/:id', (req, res) => {
     res.status(404).end();
   }
 })
+
 
 const generateId = () => {
   const maxId =
@@ -74,7 +87,13 @@ app.delete('/api/notes/:id', (req, res) => {
   res.status(204).end();
 })
 
-const PORT = 3001
+const unknownEndpoint = (req, res) => {
+  response.status(404).send({ error: "Unknown endpoint" })
+}
+
+app.use(unknownEndpoint);
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })

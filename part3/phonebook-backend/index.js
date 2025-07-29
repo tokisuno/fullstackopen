@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
+
+morgan.token('body', req => JSON.stringify(req.body));
 
 let persons = [
   {
@@ -25,12 +28,13 @@ let persons = [
 ]
 
 app.use(express.json());
+app.use(morgan(':method :url :body'));
 
 app.get('/api/persons', (_, res) => {
   res.json(persons)
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (_, res) => {
   const date = new Date();
 
   res.send(`
