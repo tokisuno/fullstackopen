@@ -29,9 +29,10 @@ let persons = [
 
 app.use(express.json());
 app.use(morgan(':method :url :body'));
+app.use(express.static('dist'));
 
 app.get('/api/persons', (_, res) => {
-  res.json(persons)
+  res.json(persons);
 })
 
 app.get('/info', (_, res) => {
@@ -86,13 +87,18 @@ app.post('/api/persons', (req, res) => {
   res.json(person)
 })
 
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "Unknown endpoint" })
+}
+app.use(unknownEndpoint);
+
 app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id;
   persons = persons.filter((person) => person.id !== id);
   res.status(204).end();
 })
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
