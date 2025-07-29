@@ -89,7 +89,7 @@ app.delete('/api/notes/:id', (req, res) => {
 })
 
 const unknownEndpoint = (req, res) => {
-  response.status(404).send({ error: "Unknown endpoint" })
+  res.status(404).send({ error: "Unknown endpoint" })
 }
 
 app.use(unknownEndpoint);
