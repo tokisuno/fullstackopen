@@ -37,7 +37,7 @@ const PersonForm = ({ persons, setPersons, setNotif, setError }) => {
             setNewName('');
             setNewNumber('');
           })
-          .catch(err => {
+          .catch(() => {
             setError(true);
             setNotif(`${foundPerson.name}'s entry was already deleted from the server!`);
             setPersons(persons.filter(person => person.id !== foundPerson.id))
@@ -58,6 +58,9 @@ const PersonForm = ({ persons, setPersons, setNotif, setError }) => {
         setPersons(persons.concat(returnedPerson))
         setNewName('');
         setNewNumber('');
+      })
+      .catch(error => {
+        console.log(error.response.data.error);
       })
     setNotif(`${newName} added successfully`);
     setTimeout(() => {
