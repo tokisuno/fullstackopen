@@ -55,9 +55,12 @@ const mostBlogs = (blogs) => {
   return largest
 }
 
+// I don't even think I will fully implement this but this is about to get ugly...
+const _mostLikes = (blogs) => {}
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
-  mostBlogs
+  mostBlogs,
 }
