@@ -2,12 +2,9 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (req, res) => {
-  Blog.find({}).then((blog) => {
-    res.json(blog);
-  })
+  const blogs = await Blog.find({});
+  res.json(blogs);
 })
-
-// change tmux binds for changing sessions
 
 blogsRouter.get('/:id', async (req, res, next) => {
   const blog = await Blog.findById(req.params.id);
@@ -47,25 +44,20 @@ blogsRouter.delete('/:id', async (req, res) => {
   res.status(204).end();
 })
 
-blogsRouter.put('/:id', (req, res, next) => {
+blogsRouter.put('/:id', async (req, res, next) => {
   const { title, author, url, likes } = req.body;
 
-  Blog.findById(req.params.id)
-    .then((blog) => {
-      if (!blog) {
-        return res.status(404).end()
-      }
-      blog.title = title
-      blog.author = author
-      blog.url = url
-      blog.likes = likes
+  const blog = await Blog.findById(req.params.id);
+  if (!blog) {
+    return res.status(404).end;
+  }
+  blog.title = title;
+  blog.author = author;
+  blog.url = url;
+  blog.likes = likes;
 
-      return blog.save().then((updatedBlog) => {
-        res.json(updatedBlog)
-      })
-    })
-    .catch(error => next(error))
-
+  const updatedBlog = await blog.save();
+  res.status(201).json(updatedBlog)
 })
 
 module.exports = blogsRouter
