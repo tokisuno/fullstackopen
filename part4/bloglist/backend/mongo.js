@@ -3,6 +3,9 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
+// const config = require('./utils/config')
+// const url = config.MONGODB_URI
+
 const url = process.env.MONGODB_URI_TEST;
 
 mongoose
@@ -24,10 +27,10 @@ const blogSchema = mongoose.Schema({
 const Blog = mongoose.model('Blog', blogSchema)
 
 const blog = new Blog({
-  title: "This is a blog post",
-  author: "tokisuno",
-  url: "https://nytimes.com",
-  likes: 100
+  title: "Joshman",
+  author: "Joshua Man",
+  url: "https://twitch.tv/joshman",
+  likes: 123
 })
 
 blog.save().then((result) => {

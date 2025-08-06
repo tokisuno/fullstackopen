@@ -1,25 +1,24 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogsRouter.get('/', (req, res) => {
+blogsRouter.get('/', async (req, res) => {
   Blog.find({}).then((blog) => {
     res.json(blog);
   })
 })
 
-blogsRouter.get('/:id', (req, res, next) => {
-  Blog.findById(req.params.id)
-    .then((blog) => {
-      if (blog) {
-        res.json(blog)
-      } else {
-        res.status(404).end()
-      }
-    })
-    .catch(error => next(error));
+// change tmux binds for changing sessions
+
+blogsRouter.get('/:id', async (req, res, next) => {
+  const blog = await Blog.findById(req.params.id);
+  if (blog) {
+    res.json(blog);
+  } else {
+    res.status(404).end();
+  }
 })
 
-blogsRouter.post('/', (req, res, next) => {
+blogsRouter.post('/', async (req, res, next) => {
   const body = req.body
 
   if (!body.title) {
@@ -39,19 +38,13 @@ blogsRouter.post('/', (req, res, next) => {
     likes: body.likes || 0
   })
 
-  blog.save()
-    .then((savedBlog) => {
-      res.json(savedBlog)
-    })
-    .catch(error => next(error))
+  const savedBlog = await blog.save();
+  res.status(201).json(savedBlog);
 })
 
-blogsRouter.delete('/:id', (req, res) => {
-  Blog.findByIdAndDelete(req.params.id)
-    .then((result) => {
-      res.status(204).end();
-    })
-    .catch(error => next(error))
+blogsRouter.delete('/:id', async (req, res) => {
+  await Blog.findByIdAndDelete(req.params.id)
+  res.status(204).end();
 })
 
 blogsRouter.put('/:id', (req, res, next) => {
