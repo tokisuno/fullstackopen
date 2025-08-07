@@ -8,7 +8,8 @@ Content-Type: application/json
   "title": "Toki Talks - Identity and commitment",
   "author": "tokisuno",
   "url": "https://tokisuno.rocks/blog/posts/20250731/",
-  "likes": 3
+  "likes": 3,
+  "userId": "6894f1310d6f13a69f285028"
 }
 
 ###

@@ -1,17 +1,20 @@
-const assert = require('node:assert')
-const { test, after, beforeEach, describe } = require('node:test')
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const helper = require('./test_helper')
+const assert = require('node:assert');
+const { test, after, beforeEach, describe } = require('node:test');
+const mongoose = require('mongoose');
+const supertest = require('supertest');
+const helper = require('./test_helper');
 
-const app = require('../app')
-const api = supertest(app)
+const app = require('../app');
+const api = supertest(app);
 
-const Blog = require('../models/blog')
+const bcrypt = require('bcrypt');
+
+const Blog = require('../models/blog');
+const User = require('../models/user');
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  await Blog.insertMany(helper.initialBlogs); // <--- i had this set to helper.initialNotes which would delete my database...
+  await Blog.insertMany(helper.initialBlogs);
 })
 
 describe('when there are blogs saved to the database', () => {
@@ -145,6 +148,38 @@ describe('when there are blogs saved to the database', () => {
         .put(`/api/blogs/${blogToUpdate.id}`)
         .send(blogToUpdate)
         .expect(201);
+    })
+  })
+  describe('when there is initially one user in the db', () => {
+    beforeEach(async () => {
+      await User.deleteMany({});
+
+      const passwordHash = await bcrypt.hash('sekret', 10);
+      const user = new User({ username: 'root', passwordHash });
+
+      await user.save();
+    })
+
+    test('creation succeeds with a fresh username', async () => {
+      const usersAtStart = await helper.usersInDb();
+
+      const newUser = {
+        username: 'mluukkai',
+        name: 'Matti Luukainen',
+        password: 'salainen'
+      }
+
+       await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+      const usersAtEnd = await helper.usersInDb();
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1);
+
+      const usernames = usersAtEnd.map(u => u.username)
+      assert(usernames.includes(newUser.username));
     })
   })
 })
