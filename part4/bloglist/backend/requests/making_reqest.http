@@ -9,7 +9,7 @@ Content-Type: application/json
   "author": "tokisuno",
   "url": "https://tokisuno.rocks/blog/posts/20250731/",
   "likes": 3,
-  "userId": "6894f1310d6f13a69f285028"
+  "userId": "6894f7031f3f35e978205282"
 }
 
 ###
@@ -24,4 +24,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/6890bced08c79075c28f4335
+DELETE http://localhost:3003/api/blogs/689e10c0213e63cec7dd19d7

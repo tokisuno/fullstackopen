@@ -31,11 +31,13 @@ describe('when there are blogs saved to the database', () => {
   })
   describe('when saving a blog', () => {
     test('successfully creates a blog post', async () => {
+
       const newPost = {
         title: "Newly added blog",
         author: "Horizon",
         url: "https://myspace.com",
-        likes: 0
+        likes: 0,
+        userId: "6894f7031f3f35e978205286"
       }
 
       await api
@@ -150,6 +152,42 @@ describe('when there are blogs saved to the database', () => {
         .expect(201);
     })
   })
+  describe('when creating a new user', () => {
+    test('creation fails when username is too short', async () => {
+      const usersAtStart = await helper.usersInDb();
+      const newUser = {
+        username: 'ha',
+        name: 'William',
+        password: 'sickpassword'
+      }
+
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+
+      const usersAtEnd = await helper.usersInDb();
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+    })
+
+    test('creation fails when the password is too short', async () => {
+      const usersAtStart = await helper.usersInDb();
+      const newUser = {
+        username: 'justinbeebs123',
+        name: "justin bieber",
+        password: "xd"
+      }
+
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+
+      const usersAtEnd = await helper.usersInDb();
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+    })
+  })
+
   describe('when there is initially one user in the db', () => {
     beforeEach(async () => {
       await User.deleteMany({});
@@ -183,9 +221,6 @@ describe('when there are blogs saved to the database', () => {
     })
   })
 })
-
-
-
 
 after(async () => {
   await mongoose.connection.close();

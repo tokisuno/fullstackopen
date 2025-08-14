@@ -3,7 +3,10 @@ const Blog = require('../models/blog');
 const User = require('../models/user');
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog
+    .find({})
+    .populate('user', { username: 1, name: 1, id: 1 })
+
   response.json(blogs);
 })
 
@@ -17,8 +20,10 @@ blogsRouter.get('/:id', async (request, response, next) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
-  const body = request.body
+  const body = request.body;
 
+  console.log(request.body);
+  // const user = await User.findById(body.userId);
   const user = await User.findById(body.userId);
 
   if (!user) {
@@ -26,6 +31,7 @@ blogsRouter.post('/', async (request, response, next) => {
       error: 'userId is missing or not valid'
     })
   }
+
   if (!body.title) {
     return response.status(400).json({ error: 'title missing' })
   }
