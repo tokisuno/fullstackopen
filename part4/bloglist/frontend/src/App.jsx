@@ -13,6 +13,7 @@ const App = () => {
   const [newAuthor, setNewAuthor] = useState('');
 
   const [errorMessage, setErrorMessage] = useState(null);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState('');
@@ -49,15 +50,15 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
-      setErrorMessage('Login Successful!');
+      setErrorMessage('Login Successful! Code: 200');
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000);
+      }, 2000);
     } catch (exception) {
-      setErrorMessage('Wrong credentials');
+      setErrorMessage('Validation Error. Code: 401');
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000);
+      }, 2000);
     }
   }
 
@@ -79,6 +80,16 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog));
+        setErrorMessage(`Blog post "${returnedBlog.title}" made successfully! Code 200`);
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 2000);
+      })
+      .catch(error => {
+        setErrorMessage(`${error}`);
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 2000);
 
       })
   }

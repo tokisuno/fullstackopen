@@ -3,11 +3,24 @@ const Notification = ({ message }) => {
     return null;
   }
 
-  return (
-    <div className="error">
+  // last 3 chars
+  const code = message.slice(-3);
+
+  console.log(code);
+
+  if (code === "200") {
+    return (
+      <div className="ok">
       {message}
-    </div>
-  )
+      </div>
+    )
+  } else {
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
 }
 
 export default Notification;
