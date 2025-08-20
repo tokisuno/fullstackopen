@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,
@@ -32,5 +34,13 @@ const LoginForm = ({
     </div>
   );
 };
+
+LoginForm.propTypes = {
+  handleSubmit: Prototypes.func.isRequired,
+  handleUsernameChange: Prototypes.func.isRequired,
+  handlePasswordChange: Prototypes.func.isRequired,
+  username: Prototypes.string.isRequired,
+  password: Prototypes.string.isRequired
+}
 
 export default LoginForm;
