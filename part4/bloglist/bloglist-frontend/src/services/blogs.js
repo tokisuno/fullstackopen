@@ -22,4 +22,12 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const newLike = async (object) => {
+  object.likes += 1;
+  const response = await axios
+    .put(`${baseUrl}/${object.id}`, object)
+
+  return response.data
+}
+
+export default { getAll, create, setToken, newLike };
