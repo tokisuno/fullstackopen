@@ -1,12 +1,14 @@
 // TODO:
-// - [ ] Implement Togglable
-// - [ ] Migrate old toggle code to use Togglable component
+// - [x] Implement Togglable
+// - [x] Migrate old toggle code to use Togglable component
 // - [ ] Make "blog-creation" functionality pop up as a toggle
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm.jsx";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -14,16 +16,15 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [blogs, setBlogs] = useState([]);
 
-  // all for creating a new blog @@
-  const [newTitle, setNewTitle] = useState("");
-  const [newURL, setNewURL] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
 
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
+
+  const loginFormRef = useRef();
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -48,13 +49,9 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
 
-      window.localStorage.setItem(
-        "loggedBloglistappUser",
-        JSON.stringify(user),
-      );
+      window.localStorage.setItem( "loggedBloglistappUser", JSON.stringify(user));
 
       blogService.setToken(user.token);
-
       setUser(user);
       setUsername("");
       setPassword("");
@@ -70,49 +67,13 @@ const App = () => {
     }
   };
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" };
-    const showWhenVisible = { display: loginVisible ? "" : "none" };
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>Log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-        </div>
-        <button
-          onClick={() => {
-            setLoginVisible(false);
-          }}
-        >
-          Cancel
-        </button>
-      </div>
-    );
-  };
-
   const handleLogout = () => {
     setUser("");
     window.localStorage.clear();
   };
 
-  const addBlog = (event) => {
-    event.preventDefault();
-
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newURL,
-    };
-
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility();
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
@@ -132,39 +93,30 @@ const App = () => {
       });
   };
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <h3>create new</h3>
-      <div>
-        Title::
-        <input value={newTitle} onChange={handleTitleChange} />
-      </div>
-      <div>
-        Author::
-        <input value={newAuthor} onChange={handleAuthorChange} />
-      </div>
-      <div>
-        Url::
-        <input value={newURL} onChange={handleURLChange} />
-      </div>
-      <button type="submit">Add</button>
-    </form>
-  );
-
   return (
     <div>
       <h2>blogs</h2>
 
       <Notification message={errorMessage} />
 
-      {!user && loginForm()}
+      {!user && <Togglable buttonLabel="login">
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </Togglable>}
 
       {user && (
         <div>
           <p>{user.name} logged in!</p>
           <button onClick={() => handleLogout()}>Logout</button>
 
-          {blogForm()}
+          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+            <BlogForm createBlog={addBlog}/>
+          </Togglable>
 
           {blogs.map((blog) => {
             return <Blog key={blog.id} blog={blog} />;
