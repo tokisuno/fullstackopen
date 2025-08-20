@@ -1,8 +1,3 @@
-// TODO:
-// - [x] Implement Togglable
-// - [x] Migrate old toggle code to use Togglable component
-// - [ ] Make "blog-creation" functionality pop up as a toggle
-
 import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm.jsx";
@@ -15,7 +10,6 @@ import loginService from "./services/login";
 const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [blogs, setBlogs] = useState([]);
-
 
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -93,6 +87,28 @@ const App = () => {
       });
   };
 
+  const removeBlog = (blog) => {
+    if (window.confirm("Are you sure you want to delete this blog?")) {
+      blogService
+        .remove(blog)
+        .then(() => {
+          setBlogs(blogs.filter((b) => b.id !== blog.id));
+          setErrorMessage(`Blog post was successfully removed! Code 200`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 2000);
+        })
+        .catch((error) => {
+          setErrorMessage(`${error}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 2000);
+        })
+    } else {
+      return;
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -118,8 +134,8 @@ const App = () => {
             <BlogForm createBlog={addBlog}/>
           </Togglable>
 
-          {blogs.map((blog) => {
-            return <Blog key={blog.id} blog={blog} />;
+          {blogs.sort((a, b) => b.likes - a.likes).map((blog) => {
+            return <Blog key={blog.id} blog={blog} remove={removeBlog}/>;
           })}
         </div>
       )}

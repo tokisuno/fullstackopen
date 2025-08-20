@@ -26,6 +26,10 @@ const Blog = forwardRef((props, ref) => {
 
   const blogStyle = {
     border: 'solid',
+    paddingTop: 10,
+    paddingLeft: 2,
+    borderWidth: 1,
+    marginBottom: 5
   }
 
   return (
@@ -41,7 +45,8 @@ const Blog = forwardRef((props, ref) => {
             <li>Written by: {props.blog.author}</li>
             <li>Likes: {likes} <button onClick={addLike}>「いいね」する</button></li>
             <li><a href={props.blog.url}>LINK</a></li>
-            <li>Added by: {props.blog.user.username}</li>
+            <li>Added by: {props.blog.user.name} ({props.blog.user.username})</li>
+            <li><button onClick={() => {props.remove(props.blog)}}>Delete</button></li>
           </ul>
         </div>
       </div>
