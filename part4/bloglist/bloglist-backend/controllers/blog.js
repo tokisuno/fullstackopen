@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router();
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 const User = require('../models/user');
@@ -80,17 +81,20 @@ blogsRouter.delete('/:id', async (request, response) => {
 blogsRouter.put('/:id', async (request, response, next) => {
   const { title, author, url, likes, user } = request.body;
 
-  const blog = await Blog.findById(request.params.id);
+  const blog = await Blog.findById(request.params.id)
+
   if (!blog) {
     return response.status(404).end;
   }
+
   blog.title = title;
   blog.author = author;
   blog.url = url;
   blog.likes = likes;
-  blog.user = user;
+  blog.user = (new mongoose.Types.ObjectId(user));
 
   const updatedBlog = await blog.save();
+  console.log(response.json(updatedBlog));
   response.status(201).json(updatedBlog)
 })
 

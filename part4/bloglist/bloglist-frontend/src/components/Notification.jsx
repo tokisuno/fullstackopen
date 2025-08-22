@@ -8,19 +8,19 @@ const Notification = ({ message }) => {
 
   console.log(code);
 
-  if (code === "200") {
+  if (code === '200') {
     return (
       <div className="ok">
-      {message}
+        {message}
       </div>
-    )
+    );
   } else {
     return (
       <div className="error">
         {message}
       </div>
-    )
+    );
   }
-}
+};
 
 export default Notification;

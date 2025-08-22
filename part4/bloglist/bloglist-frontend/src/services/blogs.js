@@ -1,5 +1,5 @@
-import axios from "axios";
-const baseUrl = "/api/blogs";
+import axios from 'axios';
+const baseUrl = '/api/blogs';
 
 let token = null;
 
@@ -25,14 +25,15 @@ const create = async (newObject) => {
 const remove = async (object) => {
   const response = await axios.delete(`${baseUrl}/${object.id}`);
   return response.data;
+};
+
+const update = async (id, newObject) => {
+  console.log("update...", newObject)
+  const request = axios.put(`${baseUrl}/${id}`, newObject);
+  return request.then((res) => {
+    console.log(res.data)
+    return res.data
+  });
 }
 
-const newLike = async (object) => {
-  object.likes += 1;
-  const response = await axios
-    .put(`${baseUrl}/${object.id}`, object)
-
-  return response.data
-}
-
-export default { getAll, create, setToken, newLike, remove };
+export default { getAll, create, setToken, update, remove };
