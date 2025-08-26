@@ -25,11 +25,23 @@ const BlogForm = ({ createBlog }) => {
       <h2>Add a new blog!</h2>
       <form onSubmit={addBlog}>
         Title::
-        <input value={newTitle} onChange={event => setNewTitle(event.target.value)}/>
+        <input
+          value={newTitle}
+          onChange={event => setNewTitle(event.target.value)}
+          placeholder="Wanna learn LaTeX?"
+        />
         Author::
-        <input value={newAuthor} onChange={event => setNewAuthor(event.target.value)}/>
+        <input
+          value={newAuthor}
+          onChange={event => setNewAuthor(event.target.value)}
+          placeholder="Luke Smith"
+        />
         URL::
-        <input value={newURL} onChange={event => setNewURL(event.target.value)}/>
+        <input
+          value={newURL}
+          onChange={event => setNewURL(event.target.value)}
+          placeholder="https://lukesmith.xyz/articles/wanna-learn-latex/"
+        />
         <button type="submit">Save!</button>
       </form>
     </div>

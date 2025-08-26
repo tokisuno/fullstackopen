@@ -32,16 +32,25 @@ describe('<Blog />', () => {
     expect(url).toBeDefined();
     expect(likes).toBeDefined();
   })
+})
+test('clicking the button calls the event handler once', async () => {
+  const blog = {
+    title: 'article_title',
+    author: 'john smith',
+    url: 'https://myspace.com',
+    user: 'xd'
+  };
 
-  test('pressing the like button twice, the eventhandler is run twice', async () => {
-    const mockHandler = vi.fn();
-    const user = userEvent.setup();
-    const button = screen.getByText('Expand');
-    await user.click(button);
+  const mockHandler = vi.fn();
 
-    const likeButton = screen.getByText('Like!');
-    await user.click(likeButton);
+  render(
+    <Blog blog={blog} addLike={mockHandler} />
+  )
 
-    expect(mockHandler.mock.calls).toHaveLength(1);
-  })
+  const user = userEvent.setup();
+  const button = screen.getByText('Like!');
+  await user.click(button);
+  await user.click(button);
+
+  expect(mockHandler.mock.calls).toHaveLength(2);
 })

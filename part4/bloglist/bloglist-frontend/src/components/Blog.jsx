@@ -1,7 +1,6 @@
-import { useState, useImperativeHandle, forwardRef } from 'react';
-import blogService from '../services/blogs';
+import { useState, useImperativeHandle } from 'react';
 
-const Blog = forwardRef((props, ref) => {
+const Blog = (props) => {
   const [expand, setExpand] = useState(false);
 
   const hideWhenVisible = { display: expand ? 'none' : '' };
@@ -11,7 +10,7 @@ const Blog = forwardRef((props, ref) => {
     setExpand(!expand);
   };
 
-  useImperativeHandle(ref, () => {
+  useImperativeHandle(props.ref, () => {
     return {
       toggleExpand
     };
@@ -44,6 +43,6 @@ const Blog = forwardRef((props, ref) => {
       </div>
     </div>
   );
-});
+};
 
 export default Blog;
