@@ -10,14 +10,18 @@ const LoginForm = ({
       <h2>Log in</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          username
-          <input value={username} onChange={handleUsernameChange} />
+          <label>
+            username
+            <input value={username} onChange={handleUsernameChange} />
+          </label>
         </div>
         <div>
-          password
-          <input value={password} onChange={handlePasswordChange} />
+          <label>
+            password
+            <input value={password} onChange={handlePasswordChange} />
+          </label>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">login</button>
       </form>
     </div>
   );

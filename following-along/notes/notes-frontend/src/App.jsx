@@ -93,7 +93,7 @@ const App = () => {
 
       <Notification message={errorMessage} />
 
-      <Togglable buttonLabel="login">
+      {!user &&<Togglable buttonLabel="login">
         <LoginForm
           username={username}
           password={password}
@@ -101,7 +101,7 @@ const App = () => {
           handlePasswordChange={({ target }) => setPassword(target.value)}
           handleSubmit={handleLogin}
         />
-      </Togglable>
+        </Togglable>}
       {user && (
         <div>
           <p>{user.name} logged in</p>
