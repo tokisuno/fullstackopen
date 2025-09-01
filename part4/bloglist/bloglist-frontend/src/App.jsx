@@ -74,15 +74,6 @@ const App = () => {
         console.log("then...", returnedBlog)
         setBlogs(blogs.map((blog) => (blog.id === id ? returnedBlog : blog)));
       })
-      // .catch((err) => {
-      //   setErrorMessage(
-      //     `Blog '${blog.title}' was already removed from the server! Code 404`,
-      //   );
-      //   setTimeout(() => {
-      //     setErrorMessage(null);
-      //   }, 2000)
-      //   setBlogs(blogs.filter((b) => b.id !== id));
-      // })
   };
 
   const addBlog = (blogObject) => {
@@ -134,7 +125,7 @@ const App = () => {
 
       <Notification message={errorMessage} />
 
-      {!user && <Togglable buttonLabel="login">
+      {!user && <Togglable buttonLabel="login" >
         <LoginForm
           username={username}
           password={password}
@@ -143,7 +134,6 @@ const App = () => {
           handleSubmit={handleLogin}
         />
       </Togglable>}
-
       {user && (
         <div>
           <p>{user.name} logged in!</p>
